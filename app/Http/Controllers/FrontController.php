@@ -10,4 +10,8 @@ class FrontController extends Controller
     {
         return view('front.shop');
     }
+    public function shopItem($id)
+    {
+        return view('front.shop-item');
+    }
 }
