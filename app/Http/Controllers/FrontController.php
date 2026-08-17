@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Item;
 class FrontController extends Controller
 {
     public function shop()
     {
-        return view('front.shop');
+        $items=Item::all();
+        //var_dump($items);
+        return view('front.shop',compact('items'));
     }
     public function shopItem($id)
     {
-        return view('front.shop-item');
+        $item=Item::findOrFail($id);
+        return view('front.shop-item',compact('item'));
     }
 }
