@@ -67,8 +67,8 @@
         <label for="in_stock" class="form-label">In Stock</label>
         <select class="form-select" id="in_stock" name="in_stock"  value="">
 
-          <option value="" selected>Yes</option>
-          <option value="">No</option>
+          <option value="1" selected>Yes</option>
+          <option value="0">No</option>
         </select>
               </div>
 <!-- Description -->
@@ -88,8 +88,9 @@
             class="form-select">
 
         <option value="">Choose Category</option>
-            <option value="">
-            </option>
+        @foreach ($categories as $category)
+            <option value="{{$category->id}}">{{$category->name}}</option>
+        @endforeach
 
     </select>
 </div>
