@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Category;
-
+use App\Http\Requests\ItemRequest;
 class ItemController extends Controller
 {
     /**
@@ -30,7 +30,8 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+    public function store(ItemRequest $request)
     {
         //dd($request);
         $items=Item::create($request->all());
