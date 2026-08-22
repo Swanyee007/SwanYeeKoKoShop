@@ -10,7 +10,7 @@
                         <div class="small mb-1">Code No:{{$item->code_no}}</div>
                         <h1 class="display-5 fw-bolder">{{$item->name}}</h1>
                         <div class="fs-5 mb-5">
-                            {{-- <span class="text-decoration-line-through">$45.00</span> --}}
+                            <!--<span class="text-decoration-line-through">$45.00</span>-->
                             <span>{{$item->price}}</span>
                         </div>
                         <p class="lead">{{$item->description}}</p>

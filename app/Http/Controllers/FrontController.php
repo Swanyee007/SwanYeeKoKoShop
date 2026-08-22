@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+
 class FrontController extends Controller
 {
     public function shop()
@@ -13,8 +14,9 @@ class FrontController extends Controller
         return view('front.shop',compact('items'));
     }
     public function shopItem($id)
+
     {
         $item=Item::findOrFail($id);
-        return view('front.shop-item',compact('item'));
+        return view ('front.shop-item',compact('item'));
     }
 }

@@ -24,22 +24,14 @@
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>Code No</th>
                                             <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Instock</th>
-                                            <th>Category</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                          <tr>
                                             <th>No.</th>
-                                            <th>Code No</th>
                                             <th>Name</th>
-                                            <th>Price</th>
-                                            <th>Instock</th>
-                                            <th>Category</th>
                                             <th>Action</th>
                                         </tr>
                                     </tfoot>
@@ -47,23 +39,21 @@
                                     @php
                                         $i=1;
                                     @endphp
-                                    @foreach($items as $item)
+                                    @foreach($payments as $payment)
                                         <tr>
                                             <td>{{$i++}}</td>
-                                            <td>{{$item->code_no}}</td>
-                                            <td>{{$item->name}}</td>
-                                            <td>{{$item->price}}</td>
-                                            <td>{{$item->in_stock}}</td>
-                                            <td>{{$item->category_id}}</td>
+
+                                            <td>{{$payment->name}}</td>
+
                                             <td>
-                                                <a href="{{route('backend.items.edit',$item->id)}}" class="btn btn-sn btn-primary">Edit</a>
-                                                <button class="btn btn-sn btn-danger delete" data-id="{{$item->id}}">Delete</button>
+                                                <a href="{{route('backend.payments.edit',$payment->id)}}" class="btn btn-sn btn-primary">Edit</a>
+                                                <button class="btn btn-sn btn-danger delete" data-id="{{$payment->id}}">Delete</button>
                                             </td>
                                         </tr>
                                     @endforeach
                                    </tbody>
                                 </table>
-                                {{$items->links()}}
+
                             </div>
                         </div>
                     </div>

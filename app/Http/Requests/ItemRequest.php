@@ -25,9 +25,9 @@ class ItemRequest extends FormRequest
         return [
             "code_no"=>'required',
             'name'=>'required',
-            'image'=>'required | image|mimes:jpg,jpeg,png,web|max:2048',
+            'image'=> 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
             'price'=>'required',
-            'in_stock'=>'required',
+             'in_stock'=> 'required|boolean',
             'description'=>'required',
             'category_id'=>'required',
         ];

@@ -59,7 +59,9 @@ class ItemController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $item=Item::find($id);
+        $categories=Category::all();
+        return view('admin.items.edit',compact('item','categories'));
     }
 
     /**
@@ -67,7 +69,36 @@ class ItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $item=Item::findOrFail($id);
+        $request->validate([
+            "code_no"=>'required',
+            'name'=>'required',
+            'image'=>'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'price'=>'required',
+            'in_stock'=>'required',
+            'description'=>'required',
+            'category_id'=>'required',
+        ]);
+        $item->code_no=$request->code_no;
+        $item->name=$request->name;
+        $item->price=$request->price;
+        $item->discount=$request->discount;
+        $item->in_stock=$request->in_stock;
+        $item->description=$request->description;
+        $item->category_id=$request->category_id;
+
+        if($request->hasFile('image'))
+        {
+            if(!empty($request->old_image)&& file_exists(public_path($request->old_image)))
+                {
+                    unlink(public_path($request->old_image));
+                }
+                $file_name=time().'.'.$request->image->extension();
+                $request->image->move(public_path('images/items'),$file_name);
+                $item->image="/images/items/".$file_name;
+        }
+        $item->save();
+        return redirect()->route('backend.items.index')->with('success','Item update successfully');
     }
 
     /**
@@ -75,6 +106,8 @@ class ItemController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $item=Item::find($id);
+        $item->delete();
+        return redirect()->route('backend.items.index');
     }
 }
