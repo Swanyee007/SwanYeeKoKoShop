@@ -6,18 +6,18 @@
     </div>
 @endif
      <div class="container-fluid px-4">
-                        <h1 class="mt-4">Payment</h1>
+                        <h1 class="mt-4">Category</h1>
                         <a href="{{route('backend.items.create')}}"
-                        class="btn btn-primary float-end">Create Payment</a>
+                        class="btn btn-primary float-end">Create Category</a>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="{{route('backend.dashboard')}}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Payments</li>
+                            <li class="breadcrumb-item active">Category</li>
                         </ol>
 
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Payment Lists
+                                Category Lists
                             </div>
                             <div class="card-body">
                                 <table class="table table-bordered">
@@ -39,15 +39,13 @@
                                     @php
                                         $i=1;
                                     @endphp
-                                    @foreach($payments as $payment)
+                                    @foreach($categories as $category)
                                         <tr>
                                             <td>{{$i++}}</td>
-
-                                            <td>{{$payment->name}}</td>
-
+                                            <td>{{$category->name}}</td>
                                             <td>
-                                                <a href="{{route('backend.payments.edit',$payment->id)}}" class="btn btn-sn btn-primary">Edit</a>
-                                                <button class="btn btn-sn btn-danger delete" data-id="{{$payment->id}}">Delete</button>
+                                                <a href="{{route('backend.categories.edit',$category->id)}}" class="btn btn-sn btn-primary">Edit</a>
+                                                <button class="btn btn-sn btn-danger delete" data-id="{{$category->id}}">Delete</button>
                                             </td>
                                         </tr>
                                     @endforeach

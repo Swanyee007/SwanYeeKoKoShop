@@ -8,8 +8,10 @@ Route::group(['prefix'=>'backend','as'=>'backend.'],function(){
     Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('dashboard');
     Route::resource('items',App\Http\Controllers\Admin\ItemController::class);
     Route::resource('payments',App\Http\Controllers\Admin\PaymentController::class);
+    Route::resource('categories',App\Http\Controllers\Admin\CategoryController::class);
 
 });
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
