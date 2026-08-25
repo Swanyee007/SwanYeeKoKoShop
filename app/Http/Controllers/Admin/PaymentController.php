@@ -36,7 +36,7 @@ class PaymentController extends Controller
         $upload=$request->logo->move(public_path('images/payments'),$file_name);
         if($upload)
             {
-                $payments->logo="images/payments".$file_name;
+                $payments->logo="images/payments/".$file_name;
             }
             $payments->save();
             return redirect()->route('backend.payments.index');
@@ -55,15 +55,32 @@ class PaymentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $payment=Payment::find($id);
+        return view('admin.payments.edit',compact('payment'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PaymentRequest $request, string $id)
     {
-        //
+        $payment=Payment::find($id);
+        $payment->update($request->all());
+        if($request->hasFile('logo'))
+         {
+            $file_name=time().'.'.$request->logo->extension();
+            $upload=$request->logo->move(public_path('images/payments'),$file_name);
+            if($upload)
+                {
+                    $payment->logo='images/payments/'.$file_name;
+                }
+         }
+         else
+            {
+                $payment->logo=$request->old_image;
+            }
+            $payment->save();
+            return redirect()->route('backend.payments.index');
     }
 
     /**
@@ -71,6 +88,8 @@ class PaymentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $payment=Payment::find($id);
+        $payment->delete();
+        return redirect()->route('backend.payments.index');
     }
 }

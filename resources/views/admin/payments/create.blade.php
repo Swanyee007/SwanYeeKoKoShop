@@ -40,10 +40,10 @@
                 <!-- Buttons -->
                 <div class="mt-3">
                     <button type="submit" class="btn btn-primary">
-                        Save Item
+                        Save Payment
                     </button>
 
-                    <a href="{{ route('backend.items.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('backend.payments.index') }}" class="btn btn-secondary">
                         Cancel
                     </a>
                 </div>
