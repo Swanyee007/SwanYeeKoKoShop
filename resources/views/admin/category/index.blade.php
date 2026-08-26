@@ -7,7 +7,7 @@
 @endif
      <div class="container-fluid px-4">
                         <h1 class="mt-4">Category</h1>
-                        <a href="{{route('backend.items.create')}}"
+                        <a href="{{route('backend.categories.create')}}"
                         class="btn btn-primary float-end">Create Category</a>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="{{route('backend.dashboard')}}">Dashboard</a></li>
@@ -51,7 +51,7 @@
                                     @endforeach
                                    </tbody>
                                 </table>
-
+                                {{$categories->links()}}
                             </div>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header bg-danger text-light">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Delete Item</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel"> Delete Category</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -89,7 +89,7 @@
             $('tbody').on('click','.delete',function(){
                 let id=$(this).data('id');
                 //console.log(id);
-                $('#deleteForm').attr('action',`items/${id}`);
+                $('#deleteForm').attr('action',`categories/${id}`);
                 $('#deleteModal').modal('show');
             })
         })

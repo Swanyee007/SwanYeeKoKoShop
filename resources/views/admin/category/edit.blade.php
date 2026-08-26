@@ -4,12 +4,12 @@
 <div class="container">
     <div class="card shadow mb-4">
         <div class="card-header">
-            <h4>Edit Payment</h4>
-            <a href="{{route('backend.payments.index')}}" class="btn btn-danger">Cancel</a>
+            <h4>Edit Category</h4>
+            <a href="{{route('backend.categories.index')}}" class="btn btn-danger">Cancel</a>
         </div>
 
         <div class="card-body">
-            <form action="{{ route('backend.payments.update',$payment->id)}}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('backend.categories.update',$category->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -17,10 +17,10 @@
 
 <!-- Item Name -->
 <div class="mb-3">
-    <label class="form-label">Payment Name</label>
+    <label class="form-label">Category Name</label>
     <input type="text"
            name="name"
-           value="{{old('name',$payment->name)}}"
+           value="{{old('name',$category->name)}}"
            class="form-control  @error ('name') is-invalid @enderror">
         @error('name')
             <div class="invalid-feedback">{{$message}}</div>
@@ -42,11 +42,11 @@
         </ul>
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="image-tab-pane" role="tabpanel" aria-labelledby="image-tab" tabindex="0">
-            <img src="{{asset($payment->logo)}}" class="w-25 h-25 my-2" alt="">
-            <input type="hidden" name="old_image" id="" value="{{$payment->logo}}">
+            <img src="{{asset($category->image)}}" class="w-25 h-25 my-2" alt="">
+            <input type="hidden" name="old_image" id="" value="{{$category->image}}">
           </div>
           <div class="tab-pane fade" id="new_image-tab-pane" role="tabpanel" aria-labelledby="new_image-tab" tabindex="0">
-             <input type="file" accept="image/*" class="form-control @error('logo') is-invalid @enderror" id="logo" name="logo" value="{{old('logo')}}">
+             <input type="file" accept="image/*" class="form-control @error('image') is-invalid @enderror" id="image" name="image" value="{{old('image')}}">
           </div>
         </div>
       </div>
@@ -57,10 +57,10 @@
                 <!-- Buttons -->
                 <div class="mt-3">
                     <button type="submit" class="btn btn-primary">
-                        Update Payment
+                        Update Category
                     </button>
 
-                    <a href="{{ route('backend.payments.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('backend.categories.index') }}" class="btn btn-secondary">
                         Cancel
                     </a>
                 </div>
