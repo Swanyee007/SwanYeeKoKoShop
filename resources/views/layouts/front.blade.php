@@ -40,11 +40,42 @@
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                         </button>
                     </form>
+                    @guest
+                    <a href="/login" class="btn mx-3">Login</a>
+                    <a href="/register" class="btn btn-dark">Register</a>
+                    @else
+                    <div class="dropdown mx-3">
+                        <a href="" class="text-decoration-none text-dark dropdown-toggle" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{Auth::user()->name}}
+                        </a>
+                        <ul class="dropdown-menu">
+                            @if(Auth::user()->role=="User")
+                                <li>
+                                    <a href="" class="dropdown-item">Profile</a>
+                                </li>
+                            @else
+                                <li>
+                                    <a href="/backend" class="dropdown-item">Admin Panel</a>
+                                </li>
+                            @endif
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                        </ul>
+                    </div>
+                    @endif
                 </div>
             </div>
         </nav>
-
-        @yield('content')
+       @yield('content')
         <!-- Footer-->
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
