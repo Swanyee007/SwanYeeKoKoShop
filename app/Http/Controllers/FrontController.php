@@ -14,9 +14,12 @@ class FrontController extends Controller
         return view('front.shop',compact('items'));
     }
     public function shopItem($id)
-
     {
         $item=Item::findOrFail($id);
         return view ('front.shop-item',compact('item'));
+    }
+    public function carts()
+    {
+        return view('front.carts');
     }
 }
