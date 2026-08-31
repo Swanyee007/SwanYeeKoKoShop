@@ -37,7 +37,7 @@
                         <a href="{{route('item-carts.carts')}}" class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" id="item-count">0</span>
                         </a>
                     </form>
                     @guest
@@ -81,8 +81,10 @@
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
         </footer>
         <!-- Bootstrap core JS-->
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="{{asset('front-asset/js/scripts.js')}}"></script>
+        <script src="{{asset('front-asset/js/add_to_cart.js')}}"></script>
     </body>
 </html>

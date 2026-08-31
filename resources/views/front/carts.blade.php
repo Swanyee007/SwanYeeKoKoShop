@@ -20,5 +20,25 @@
             </tbody>
         </table>
     </div>
+    <div>
+        @guest
+            <a href="/login" class="btn btn-primary">Login</a>
+            @else
+            <form action="" id="paymentForm" class="row" enctype="multipart/form-data">
+                @csrf
+                <div class="col-md-6">
+                    <label for="payment_slip" class="mb-1">Payment Slip Photo</label>
+                    <input type="file" name="payment_slip" id="payment_slip" class="form-control">
+                </div>
+                <div class="col-md-6">
+                    <label for="payment_method" class="mt-3">Payment_Method</label>
+                    <select name="payment_method" id="payment_method" class="form-select">
+                        <option value="">Choose Payment Method</option>
+
+                    </select>
+                </div>
+            </form>
+            @endif
+    </div>
 </div>
 @endsection
