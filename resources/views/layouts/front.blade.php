@@ -5,6 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
+        {{-- ajax set up link connection --}}
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Shop Homepage - Start Bootstrap Template</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -86,5 +88,6 @@
         <!-- Core theme JS-->
         <script src="{{asset('front-asset/js/scripts.js')}}"></script>
         <script src="{{asset('front-asset/js/add_to_cart.js')}}"></script>
+        @yield('script')
     </body>
 </html>
