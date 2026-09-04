@@ -36,9 +36,9 @@ class FrontController extends Controller
             {
                 $order =new Order();
                 $order->voucher_no=$voucher_no;
-                $order->total=intval($data['qty'])*($data['price']-($data['price']*($data['dicount']/100)));
+                $order->total=intval($data['qty'])*($data['price']-($data['price']*($data['discount']/100)));
                 $order->qty=$data['qty'];
-                $order->payment_slip='/images/payment-slips/'.$file_name;
+                $order->payment_slip='/images/payment-slip/'.$file_name;
                 $order->status="Pending";
                 $order->note=$request->note;
                 $order->item_id=$data['id'];
@@ -47,6 +47,6 @@ class FrontController extends Controller
                 $order->save();
 
             }
-            return response()->json(['succrss'=>true, 'message'=>'Order Successfully']);
+            return response()->json(['success'=>true, 'message'=>'Order Successfully']);
     }
 }

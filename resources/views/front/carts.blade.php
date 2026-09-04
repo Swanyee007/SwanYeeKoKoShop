@@ -28,7 +28,7 @@
             @csrf
             <div class="col-md-6">
                 <label for="payment_slip" class="mb-1">Payment Slip Photo</label>
-                <input type="file" name="payment_slip" id="payment_slip" class="form-control">
+                <input type="file" name="payment_slip" id="payment_slip" class="form-control" required>
             </div>
             <div class="col-md-6">
                 <label for="payment_method" class="mt-3">Payemnt Method</label>
@@ -41,7 +41,7 @@
             </div>
             <div class="mb-3">
                 <label for="address">Customer Address</label>
-                <input type="text" name="note" class="form-control" require>
+                <input type="text" name="note" class="form-control" required>
             </div>
             <button class="btn btn-primary my-3" id="order-now" type="submit">Order Now</button>
         </form>
@@ -79,6 +79,7 @@
                         alert(response.message);
                         localStorage.removeItem('shops');
                         location.reload();
+                        location.href="/";
                     }
                 },
                 error:function(xhr){
