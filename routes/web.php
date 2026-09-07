@@ -18,6 +18,7 @@ Route::group(['middleware'=>['auth','role:admin'],'prefix'=>'backend','as'=>'bac
     Route::get('orders',[App\Http\Controllers\Admin\OrderController::class,'orders'])->name('orders');
     Route::get('orderAccept',[App\Http\Controllers\Admin\OrderController::class,'orderAccept'])->name('orderAccept');
     Route::get('ordercomplete',[App\Http\Controllers\Admin\OrderController::class,'ordercomplete'])->name('ordercomplete');
+    Route::get('orders/{voucher}',[App\Http\Controllers\Admin\OrderController::class,'orderDetail'])->name('orders.detail');
 });
 Auth::routes();
 

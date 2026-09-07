@@ -44,4 +44,9 @@ class OrderController extends Controller
             }
         return view('admin.orders.index',compact('order_data'));
 }
+    public function orderDetail($voucher){
+        $orders=Order::where('voucher_no',$voucher)->get();
+        $order_first=Order::where('voucher_no',$voucher)->first();
+        return view('admin.orders.detail',compact('orders','order_first'));
+    }
 }

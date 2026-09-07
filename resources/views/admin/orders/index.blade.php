@@ -77,7 +77,7 @@
                                                     {{$order->payment->name}}
                                                 </td>
                                                 <td>
-                                                    <a href="">Details</a>
+                                                    <a href="{{route('backend.orders.detail',$order->voucher_no)}}" class="btn btn-sm btn-info">Details</a>
                                                 </td>
                                             </tr>
 

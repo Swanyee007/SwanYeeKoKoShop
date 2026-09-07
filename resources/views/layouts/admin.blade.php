@@ -60,6 +60,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Item
                             </a>
+                            <a class="nav-link" href="{{route('backend.orders')}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Order Lists
+                            </a>
                             <a class="nav-link" href="{{route('backend.payments.index')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Payment
