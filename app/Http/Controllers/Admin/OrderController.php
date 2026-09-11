@@ -49,4 +49,9 @@ class OrderController extends Controller
         $order_first=Order::where('voucher_no',$voucher)->first();
         return view('admin.orders.detail',compact('orders','order_first'));
     }
+    public function status(Request $request,$voucher)
+    {
+        Order::where('voucher_no',$voucher)->update(['status'=>$request->status]);
+        return redirect()->route('backend.orders');
+    }
 }

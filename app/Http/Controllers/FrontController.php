@@ -18,7 +18,9 @@ class FrontController extends Controller
     public function shopItem($id)
     {
         $item=Item::findOrFail($id);
-        return view ('front.shop-item',compact('item'));
+        $category_id=$item->category_id;
+        $related_items=Item::where('category_id',$category_id)->where('id',"!=",$id)->orderBy('id','DESC')->limit(4)->get();
+        return view ('front.shop-item',compact('item','related_items'));
     }
     public function carts()
     {
@@ -48,5 +50,10 @@ class FrontController extends Controller
 
             }
             return response()->json(['success'=>true, 'message'=>'Order Successfully']);
+    }
+    public function itemcategory($category_id)
+    {
+        $items=Item::where('category_id',$category_id)->orderBy('id','DESC')->paginate(8);
+        return view('front.item-category',compact('items'));
     }
 }

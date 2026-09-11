@@ -27,7 +27,7 @@
         <form  id="paymentForm" class="row" enctype="multipart/form-data">
             @csrf
             <div class="col-md-6">
-                <label for="payment_slip" class="mb-1">Payment Slip Photo</label>
+                <label for="payment_slip" class="mb-3">Payment Slip Photo</label>
                 <input type="file" name="payment_slip" id="payment_slip" class="form-control" required>
             </div>
             <div class="col-md-6">

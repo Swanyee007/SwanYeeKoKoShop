@@ -8,7 +8,7 @@ Route::get('/shop-item/{id}',[App\Http\Controllers\FrontController::class,'shopI
 Route::get('item-carts',[App\Http\Controllers\FrontController::class,'carts'])->name('item-carts.carts');
 
 Route::post('order-now',[App\Http\Controllers\FrontController::class,'orderNow'])->name('orderNow');
-
+Route::get('item-categories/{category_id}',[App\Http\Controllers\FrontController::class,'itemcategory'])->name('item.categories');
 Route::group(['middleware'=>['auth','role:admin'],'prefix'=>'backend','as'=>'backend.'],function(){
     Route::get('/',[App\Http\Controllers\Admin\DashboardController::class,'index'])->name('dashboard');
     Route::resource('items',App\Http\Controllers\Admin\ItemController::class);
@@ -19,6 +19,7 @@ Route::group(['middleware'=>['auth','role:admin'],'prefix'=>'backend','as'=>'bac
     Route::get('orderAccept',[App\Http\Controllers\Admin\OrderController::class,'orderAccept'])->name('orderAccept');
     Route::get('ordercomplete',[App\Http\Controllers\Admin\OrderController::class,'ordercomplete'])->name('ordercomplete');
     Route::get('orders/{voucher}',[App\Http\Controllers\Admin\OrderController::class,'orderDetail'])->name('orders.detail');
+    Route::put('orders/{voucher}',[App\Http\Controllers\Admin\OrderController::class,'status'])->name('orders.status');
 });
 Auth::routes();
 
