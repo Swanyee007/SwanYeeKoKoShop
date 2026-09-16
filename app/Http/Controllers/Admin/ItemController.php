@@ -21,10 +21,14 @@ class ItemController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+   public function create()
     {
-        $categories=Category::all();
-        return view('admin.items.create',compact('categories'));
+        $categories = Category::whereNotNull('parent_id')
+            ->with('parent')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.items.create', compact('categories'));
     }
 
     /**
@@ -59,9 +63,14 @@ class ItemController extends Controller
      */
     public function edit(string $id)
     {
-        $item=Item::find($id);
-        $categories=Category::all();
-        return view('admin.items.edit',compact('item','categories'));
+        $item = Item::findOrFail($id);
+
+        $categories = Category::whereNotNull('parent_id')
+            ->with('parent')
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.items.edit', compact('item', 'categories'));
     }
 
     /**

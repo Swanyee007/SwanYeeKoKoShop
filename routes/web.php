@@ -24,3 +24,7 @@ Route::group(['middleware'=>['auth','role:admin'],'prefix'=>'backend','as'=>'bac
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/about', function ()
+{
+    return view('front.about');
+})->name('about');

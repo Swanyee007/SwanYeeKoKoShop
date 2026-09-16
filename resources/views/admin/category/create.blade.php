@@ -22,8 +22,19 @@
         @error('name')
             <div class="invalid-feedback">{{$message}}</div>
         @enderror
+</div>
 
-   </div>
+<div class="mb-3">
+    <label for="parent_id" class="form-label">Parent Category</label>
+    <select name="parent_id" id="parent_id" class="form-control">
+        <option value="">-- Main Category --</option>
+            @foreach($categories as $category)
+        <option value="{{ $category->id }}">
+            {{ $category->name }}
+        </option>
+        @endforeach
+    </select>
+</div>
 
 <!-- Image -->
 <div class="mb-3">

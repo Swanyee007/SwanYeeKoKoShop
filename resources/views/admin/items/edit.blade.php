@@ -119,18 +119,26 @@
     <label class="form-label">Category</label>
 
     <select name="category_id"
-            class="form-select  @error ('category_id') is-invalid @enderror">
+            class="form-select @error('category_id') is-invalid @enderror">
 
         <option value="">Choose Category</option>
+
         @foreach ($categories as $category)
-            <option value="{{$category->id}}"
-            {{old('category_id',$item->category_id)== $category->id ? 'selected' : ''}}>
-            {{$category->name}}</option>
+            <option value="{{ $category->id }}"
+                {{ old('category_id', $item->category_id) == $category->id ? 'selected' : '' }}>
+
+                {{ $category->parent->name ?? 'No Parent' }}
+                → {{ $category->name }}
+
+            </option>
         @endforeach
 
     </select>
+
     @error('category_id')
-        <div class="invalid-feedback">{{$message}}</div>
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
     @enderror
 </div>
 
