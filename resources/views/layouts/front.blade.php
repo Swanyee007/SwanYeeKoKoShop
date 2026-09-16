@@ -2,31 +2,39 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    {{-- ajax set up link connection --}}
+    {{-- AJAX / CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Shop Homepage - Start Bootstrap Template</title>
 
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Favicon -->
+    <link rel="icon"
+          type="image/x-icon"
+          href="assets/favicon.ico" />
 
-    <!-- Bootstrap icons-->
+    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
-        rel="stylesheet" />
+          rel="stylesheet" />
 
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="{{ asset('front-asset/css/styles.css') }}" rel="stylesheet" />
+    <!-- Core Theme CSS -->
+    <link href="{{ asset('front-asset/css/styles.css') }}"
+          rel="stylesheet" />
+
 
     <style>
 
-        /* ==============================
-           Footer Contact
-        ============================== */
+        /* =========================================================
+           FOOTER CONTACT
+        ========================================================= */
 
         .footer-contact {
             display: flex;
@@ -39,168 +47,367 @@
             margin-top: 20px;
         }
 
-        /* Email and Phone Button */
+
+        /* Email / Phone Button */
+
         .contact-item {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+
             padding: 10px 15px;
+
             border-radius: 30px;
+
             color: #f8f9fa;
+
             background: rgba(255, 255, 255, 0.08);
+
             border: 1px solid rgba(255, 255, 255, 0.18);
+
             text-decoration: none;
+
             font-size: 14px;
+
             white-space: nowrap;
+
             transition: all 0.3s ease;
         }
 
-        /* Icon Design */
+
+        /* Contact Icon */
+
         .contact-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             width: 32px;
             height: 32px;
+
             border-radius: 50%;
+
             color: #ffffff;
-            background: linear-gradient(135deg, #6f42c1, #0d6efd);
+
+            background: linear-gradient(
+                135deg,
+                #6f42c1,
+                #0d6efd
+            );
+
             font-size: 15px;
         }
 
-        /* Hover Effect */
+
+        /* Contact Hover */
+
         .contact-item:hover {
             color: #ffffff;
-            background: rgba(13, 110, 253, 0.25);
+
+            background: rgba(
+                13,
+                110,
+                253,
+                0.25
+            );
+
             border-color: #0d6efd;
+
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(13, 110, 253, 0.25);
+
+            box-shadow:
+                0 5px 15px
+                rgba(13, 110, 253, 0.25);
         }
+
 
         .contact-item:hover .contact-icon {
-            background: linear-gradient(135deg, #0d6efd, #6f42c1);
+
+            background: linear-gradient(
+                135deg,
+                #0d6efd,
+                #6f42c1
+            );
         }
 
 
-        /* ==============================
-           Shop Nested Dropdown
-        ============================== */
+
+        /* =========================================================
+           SHOP NESTED DROPDOWN
+        ========================================================= */
 
         .shop-dropdown {
+
             min-width: 220px;
+
             padding: 8px 0;
         }
 
+
         /* Main Category */
+
         .main-category-item {
+
             position: relative;
         }
 
+
         .main-category-link {
+
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
+
             padding: 8px 16px;
+
             color: #212529;
+
             text-decoration: none;
+
             white-space: nowrap;
+
+            cursor: pointer;
         }
+
 
         .main-category-link:hover {
+
             background-color: #f8f9fa;
+
             color: #0d6efd;
         }
+
 
         /* Arrow */
+
         .category-arrow {
+
             font-size: 12px;
+
             margin-left: 20px;
+
+            transition: transform 0.2s ease;
         }
 
-        /* Child Category Submenu */
+
+        /* Rotate arrow */
+
+        .main-category-item:hover
+        > .main-category-link
+        .category-arrow {
+
+            transform: translateX(3px);
+        }
+
+
+        /* =========================================================
+           CHILD CATEGORY SUBMENU
+        ========================================================= */
+
         .child-category-menu {
+
             display: none;
+
             position: absolute;
+
             top: 0;
+
             left: 100%;
+
             min-width: 190px;
+
             padding: 8px 0;
+
             margin: 0;
+
             background-color: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.15);
+
+            border: 1px solid rgba(
+                0,
+                0,
+                0,
+                0.15
+            );
+
             border-radius: 0.375rem;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+
+            box-shadow:
+                0 0.5rem 1rem
+                rgba(0, 0, 0, 0.15);
+
             list-style: none;
-            z-index: 1000;
+
+            z-index: 1050;
         }
 
-        /* Show Child Categories */
-        .main-category-item:hover > .child-category-menu {
-            display: block;
+
+        /* Desktop Hover */
+
+        @media (min-width: 992px) {
+
+            .main-category-item:hover
+            > .child-category-menu {
+
+                display: block;
+            }
+
         }
+
 
         /* Child Category Link */
+
         .child-category-link {
+
             display: block;
+
             padding: 8px 16px;
+
             color: #212529;
+
             text-decoration: none;
+
             white-space: nowrap;
+
+            transition:
+                background-color 0.2s ease,
+                color 0.2s ease;
         }
 
+
         .child-category-link:hover {
+
             background-color: #f8f9fa;
+
             color: #0d6efd;
         }
 
 
-        /* ==============================
-           Mobile Responsive
-        ============================== */
+
+        /* =========================================================
+           MOBILE NAVBAR
+        ========================================================= */
+
+        @media (max-width: 991.98px) {
+
+            .shop-dropdown {
+
+                width: 100%;
+
+                min-width: 0;
+
+                border: none;
+
+                box-shadow: none;
+
+                padding: 0;
+            }
+
+
+            .main-category-item {
+
+                width: 100%;
+            }
+
+
+            .main-category-link {
+
+                width: 100%;
+
+                padding: 10px 16px;
+            }
+
+
+            /* Child Menu */
+
+            .child-category-menu {
+
+                position: static;
+
+                display: none;
+
+                width: 100%;
+
+                min-width: 0;
+
+                margin: 0;
+
+                padding: 0;
+
+                border: none;
+
+                border-radius: 0;
+
+                box-shadow: none;
+
+                background-color: #f8f9fa;
+            }
+
+
+            /* Opened on Mobile */
+
+            .main-category-item.show
+            > .child-category-menu {
+
+                display: block;
+            }
+
+
+            /* Mobile Child Link */
+
+            .child-category-link {
+
+                padding: 9px 16px 9px 35px;
+
+                border-top: 1px solid
+                    rgba(0, 0, 0, 0.05);
+            }
+
+
+            /* Mobile Arrow */
+
+            .main-category-item.show
+            > .main-category-link
+            .category-arrow {
+
+                transform: rotate(90deg);
+            }
+
+        }
+
+
+
+        /* =========================================================
+           SMALL SCREEN FOOTER
+        ========================================================= */
 
         @media (max-width: 576px) {
 
             .footer-contact {
+
                 justify-content: center;
+
                 gap: 8px;
             }
 
+
             .contact-item {
+
                 padding: 8px 11px;
+
                 font-size: 12px;
             }
 
+
             .contact-icon {
+
                 width: 28px;
+
                 height: 28px;
+
                 font-size: 13px;
-            }
-
-        }
-
-        /* Mobile Navbar */
-        @media (max-width: 991.98px) {
-
-            .child-category-menu {
-                position: static;
-                display: none;
-                margin-left: 15px;
-                border: none;
-                box-shadow: none;
-                border-radius: 0;
-            }
-
-            .main-category-item:hover > .child-category-menu {
-                display: none;
-            }
-
-            .main-category-item.show > .child-category-menu {
-                display: block;
-            }
-
-            .main-category-link {
-                cursor: pointer;
             }
 
         }
@@ -212,15 +419,28 @@
 
 <body>
 
-    <!-- Navigation-->
+
+    <!-- =========================================================
+         NAVIGATION
+    ========================================================= -->
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
         <div class="container px-4 px-lg-5">
 
-            <a class="navbar-brand" href="{{ route('shop') }}">
+
+            <!-- Brand -->
+
+            <a class="navbar-brand"
+               href="{{ route('shop') }}">
+
                 Black-Berry !
+
             </a>
 
+
+
+            <!-- Mobile Toggle -->
 
             <button class="navbar-toggler"
                     type="button"
@@ -235,12 +455,20 @@
             </button>
 
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+            <!-- Navbar Content -->
+
+            <div class="collapse navbar-collapse"
+                 id="navbarSupportedContent">
+
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
 
 
-                    <!-- Home -->
+                    <!-- =================================================
+                         HOME
+                    ================================================= -->
+
                     <li class="nav-item">
 
                         <a class="nav-link active"
@@ -254,7 +482,11 @@
                     </li>
 
 
-                    <!-- About -->
+
+                    <!-- =================================================
+                         ABOUT
+                    ================================================= -->
+
                     <li class="nav-item">
 
                         <a class="nav-link"
@@ -267,8 +499,15 @@
                     </li>
 
 
-                    <!-- Shop -->
+
+                    <!-- =================================================
+                         SHOP
+                    ================================================= -->
+
                     <li class="nav-item dropdown">
+
+
+                        <!-- Shop Button -->
 
                         <a class="nav-link dropdown-toggle"
                            id="navbarDropdown"
@@ -282,69 +521,109 @@
                         </a>
 
 
+
+                        {{-- =================================================
+                             GET MAIN CATEGORIES + CHILDREN
+                        ================================================= --}}
+
                         @php
 
-                            $mainCategories = \App\Models\Category::whereNull('parent_id')
-                                ->with('children')
-                                ->orderBy('name')
-                                ->get();
+                            $mainCategories =
+                                \App\Models\Category::whereNull('parent_id')
+                                    ->with('children')
+                                    ->orderBy('name')
+                                    ->get();
 
                         @endphp
 
+
+
+                        <!-- Shop Dropdown -->
 
                         <ul class="dropdown-menu shop-dropdown"
                             aria-labelledby="navbarDropdown">
 
 
-                            @foreach($mainCategories as $mainCategory)
+                            @forelse($mainCategories as $mainCategory)
 
 
-                                <!-- Main Category -->
+                                <!-- =================================================
+                                     MAIN CATEGORY
+                                ================================================= -->
+
                                 <li class="main-category-item">
 
 
                                     <a class="main-category-link"
-                                       href="{{ route('item.categories', $mainCategory->id) }}">
+                                       href="{{ route(
+                                           'item.categories',
+                                           $mainCategory->id
+                                       ) }}">
+
 
                                         <span>
+
                                             {{ $mainCategory->name }}
+
                                         </span>
 
+
+
+                                        <!-- Arrow -->
 
                                         @if($mainCategory->children->count() > 0)
 
                                             <span class="category-arrow">
+
                                                 <i class="bi bi-chevron-right"></i>
+
                                             </span>
 
                                         @endif
 
+
                                     </a>
 
 
-                                    <!-- Child Categories -->
+
+                                    <!-- =================================================
+                                         CHILD CATEGORIES
+                                    ================================================= -->
+
                                     @if($mainCategory->children->count() > 0)
+
 
                                         <ul class="child-category-menu">
 
 
-                                            @foreach($mainCategory->children as $childCategory)
+                                            @foreach(
+                                                $mainCategory->children
+                                                as $childCategory
+                                            )
+
 
                                                 <li>
 
+
                                                     <a class="child-category-link"
-                                                       href="{{ route('item.categories', $childCategory->id) }}">
+                                                       href="{{ route(
+                                                           'item.categories',
+                                                           $childCategory->id
+                                                       ) }}">
 
                                                         {{ $childCategory->name }}
 
                                                     </a>
 
+
                                                 </li>
+
 
                                             @endforeach
 
 
                                         </ul>
+
 
                                     @endif
 
@@ -352,22 +631,42 @@
                                 </li>
 
 
-                            @endforeach
+                            @empty
+
+
+                                <!-- No Category -->
+
+                                <li>
+
+                                    <span class="dropdown-item text-muted">
+
+                                        No categories available.
+
+                                    </span>
+
+                                </li>
+
+
+                            @endforelse
 
 
                         </ul>
 
                     </li>
 
+
                 </ul>
 
 
-                <!-- Cart -->
+
+                <!-- =========================================================
+                     CART
+                ========================================================= -->
+
                 <form class="d-flex">
 
                     <a href="{{ route('item-carts.carts') }}"
-                       class="btn btn-outline-dark"
-                       type="submit">
+                       class="btn btn-outline-dark">
 
                         <i class="bi-cart-fill me-1"></i>
 
@@ -385,8 +684,15 @@
                 </form>
 
 
-                <!-- Authentication -->
+
+                <!-- =========================================================
+                     AUTHENTICATION
+                ========================================================= -->
+
                 @guest
+
+
+                    <!-- Login -->
 
                     <a href="/login"
                        class="btn mx-3">
@@ -396,6 +702,9 @@
                     </a>
 
 
+
+                    <!-- Register -->
+
                     <a href="/register"
                        class="btn btn-dark">
 
@@ -403,13 +712,16 @@
 
                     </a>
 
+
                 @else
 
+
+                    <!-- User Dropdown -->
 
                     <div class="dropdown mx-3">
 
 
-                        <a href=""
+                        <a href="#"
                            class="text-decoration-none text-dark dropdown-toggle"
                            role="button"
                            id="userDropdown"
@@ -421,14 +733,18 @@
                         </a>
 
 
+
                         <ul class="dropdown-menu">
 
 
                             @if(Auth::user()->role == "User")
 
+
+                                <!-- Profile -->
+
                                 <li>
 
-                                    <a href=""
+                                    <a href="#"
                                        class="dropdown-item">
 
                                         Profile
@@ -437,7 +753,11 @@
 
                                 </li>
 
+
                             @else
+
+
+                                <!-- Admin Panel -->
 
                                 <li>
 
@@ -450,15 +770,23 @@
 
                                 </li>
 
+
                             @endif
 
+
+
+                            <!-- Logout -->
 
                             <li>
 
                                 <a class="dropdown-item"
                                    href="{{ route('logout') }}"
-                                   onclick="event.preventDefault();
-                                   document.getElementById('logout-form').submit();">
+                                   onclick="
+                                       event.preventDefault();
+                                       document
+                                           .getElementById('logout-form')
+                                           .submit();
+                                   ">
 
                                     {{ __('Logout') }}
 
@@ -481,6 +809,7 @@
 
                     </div>
 
+
                 @endif
 
 
@@ -491,43 +820,64 @@
     </nav>
 
 
+
+    <!-- =========================================================
+         PAGE CONTENT
+    ========================================================= -->
+
     @yield('content')
 
 
-    <!-- Footer-->
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
     <footer class="py-5 bg-dark">
+
 
         <div class="col-lg-4 col-md-6 mb-4 mb-md-0 text-end">
 
+
             <h5 class="text-uppercase mb-4">
+
                 Contact Us
+
             </h5>
+
 
 
             <div class="footer-contact">
 
 
                 <!-- Email -->
+
                 <a href="mailto:blackberryonlineshop@gmail.com"
                    class="contact-item">
 
                     <i class="bi bi-envelope-fill contact-icon"></i>
 
                     <span>
+
                         blackberryonlineshop@gmail.com
+
                     </span>
 
                 </a>
 
 
+
                 <!-- Phone -->
+
                 <a href="tel:09531110158"
                    class="contact-item">
 
                     <i class="bi bi-telephone-fill contact-icon"></i>
 
                     <span>
+
                         09531110158
+
                     </span>
 
                 </a>
@@ -535,27 +885,236 @@
 
             </div>
 
+
         </div>
+
 
     </footer>
 
 
-    <!-- Bootstrap core JS-->
+
+    <!-- =========================================================
+         JQUERY
+    ========================================================= -->
+
     <script src="https://code.jquery.com/jquery-3.7.1.js"
-            integrity="sha256-eKhayi8LEQwp4NK+N-CfCh+3qOVUtJn3QNZ0TciWLP4="
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
             crossorigin="anonymous">
     </script>
+
+
+
+    <!-- =========================================================
+         BOOTSTRAP JS
+    ========================================================= -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
 
-    <!-- Core theme JS-->
+
+    <!-- =========================================================
+         CORE THEME JS
+    ========================================================= -->
+
     <script src="{{ asset('front-asset/js/scripts.js') }}">
     </script>
 
+
+    <!-- =========================================================
+         ADD TO CART JS
+    ========================================================= -->
+
     <script src="{{ asset('front-asset/js/add_to_cart.js') }}">
     </script>
+
+
+
+    <!-- =========================================================
+         MOBILE NESTED CATEGORY JS
+    ========================================================= -->
+
+    <script>
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+                /*
+                ================================================
+                Mobile Category Handling
+                ================================================
+                */
+
+                const mainCategoryItems =
+                    document.querySelectorAll(
+                        '.main-category-item'
+                    );
+
+
+                mainCategoryItems.forEach(
+                    function (item) {
+
+                        const link =
+                            item.querySelector(
+                                ':scope > .main-category-link'
+                            );
+
+                        const submenu =
+                            item.querySelector(
+                                ':scope > .child-category-menu'
+                            );
+
+
+                        /*
+                        ----------------------------------------
+                        Only process categories that have children
+                        ----------------------------------------
+                        */
+
+                        if (!submenu || !link) {
+                            return;
+                        }
+
+
+                        link.addEventListener(
+                            'click',
+                            function (event) {
+
+                                /*
+                                --------------------------------
+                                Desktop
+                                --------------------------------
+                                */
+
+                                if (window.innerWidth >= 992) {
+
+                                    return;
+                                }
+
+
+                                /*
+                                --------------------------------
+                                Mobile
+                                --------------------------------
+
+                                First click:
+                                Open child categories.
+
+                                Second click:
+                                Go to Main Category page.
+                                --------------------------------
+                                */
+
+                                if (!item.classList.contains('show')) {
+
+                                    event.preventDefault();
+
+
+                                    /*
+                                    Close other categories
+                                    */
+
+                                    mainCategoryItems.forEach(
+                                        function (otherItem) {
+
+                                            if (
+                                                otherItem !== item
+                                            ) {
+
+                                                otherItem.classList.remove(
+                                                    'show'
+                                                );
+
+                                            }
+
+                                        }
+                                    );
+
+
+                                    /*
+                                    Open current category
+                                    */
+
+                                    item.classList.add('show');
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                /*
+                ================================================
+                Close mobile child menus when Shop dropdown closes
+                ================================================
+                */
+
+                const shopDropdown =
+                    document.querySelector(
+                        '.shop-dropdown'
+                    );
+
+
+                const shopButton =
+                    document.querySelector(
+                        '#navbarDropdown'
+                    );
+
+
+                if (shopButton) {
+
+                    shopButton.addEventListener(
+                        'click',
+                        function () {
+
+                            /*
+                            Wait for Bootstrap dropdown state
+                            */
+
+                            setTimeout(
+                                function () {
+
+                                    /*
+                                    If Shop dropdown is closed,
+                                    close all child menus.
+                                    */
+
+                                    if (
+                                        !shopButton.classList.contains(
+                                            'show'
+                                        )
+                                    ) {
+
+                                        mainCategoryItems.forEach(
+                                            function (item) {
+
+                                                item.classList.remove(
+                                                    'show'
+                                                );
+
+                                            }
+                                        );
+
+                                    }
+
+                                },
+                                200
+                            );
+
+                        }
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
 
 
     @yield('script')
@@ -564,3 +1123,4 @@
 </body>
 
 </html>
+```

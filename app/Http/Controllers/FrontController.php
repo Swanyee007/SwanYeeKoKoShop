@@ -51,9 +51,25 @@ class FrontController extends Controller
             }
             return response()->json(['success'=>true, 'message'=>'Order Successfully']);
     }
-    public function itemcategory($category_id)
+   public function itemcategory($category_id)
     {
-        $items=Item::where('category_id',$category_id)->orderBy('id','DESC')->paginate(8);
-        return view('front.item-category',compact('items'));
+        $category = \App\Models\Category::with('children')->findOrFail($category_id);
+
+        if (is_null($category->parent_id)) {
+
+            $childCategoryIds = $category->children->pluck('id');
+
+            $items = Item::whereIn('category_id', $childCategoryIds)
+                ->orderBy('id', 'DESC')
+                ->paginate(8);
+
+        } else {
+
+            $items = Item::where('category_id', $category->id)
+                ->orderBy('id', 'DESC')
+                ->paginate(8);
+        }
+
+        return view('front.item-category', compact('items'));
     }
 }
