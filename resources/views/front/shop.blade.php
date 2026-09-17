@@ -5,11 +5,32 @@
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Black-Berry !</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Your Trusted Online Shopping Partner</p>
+
+                    <div class="d-flex justify-content-center align-items-center">
+
+                        <!-- Logo -->
+                        <img
+                            src="{{ asset('front-asset/images/blackberry-logo.jpeg') }}"
+                            alt="Black-Berry Logo"
+                            class="shop-logo me-3"
+                        >
+
+                        <!-- Shop Name -->
+                        <h1 class="display-4 fw-bolder mb-0">
+                            Black-Berry !
+                        </h1>
+
+                    </div>
+
+                    <p class="lead fw-normal text-white-50 mb-0">
+                        Your Trusted Online Shopping Partner
+                    </p>
+
                 </div>
             </div>
         </header>
+
+
         <!-- Section-->
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
@@ -18,43 +39,103 @@
                     @foreach ($items as $item)
                     <div class="col mb-5">
                         <div class="card h-100">
+
                             <!-- Product image-->
                             <img class="card-img-top" src="{{$item->image}}" alt="..." />
+
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
+
                                     <!-- Product name-->
                                     <h5 class="fw-bolder">{{$item->name}}</h5>
+
                                     <!-- Product price-->
-                                     @if($item->discount>0)
-                                    <span class="text-decoration-line-through">{{$item->price}}</span>
+                                    @if($item->discount>0)
+
+                                    <span class="text-decoration-line-through">
+                                        {{$item->price}}
+                                    </span>
+
                                     {{$item->price-($item->price*($item->discount/100))}}MMK
+
                                     @else
+
                                         {{$item->price}}MMK
+
                                     @endif
+
                                 </div>
                             </div>
+
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                 <div class="text-center row">
+
                                     <div class="d-flex justify-content-between align-item-center mt-2">
-                                          <a class="btn btn-sm btn-outline-dark " href="{{route('shop-item',$item->id)}}">Detail</a>
-                                        <input type="hidden" name='' class="qty" value='1'>
-                                          <button class="btn btn-sm btn-dark addToCart"
-                                        data-id="{{$item->id}}"
-                                        data-name="{{$item->name}}"
-                                        data-price="{{$item->price}}"
-                                        data-discount="{{$item->discount}}"
-                                        data-image="{{$item->image}}">Add to Cart</button>
+
+                                        <a
+                                            class="btn btn-sm btn-outline-dark "
+                                            href="{{route('shop-item',$item->id)}}"
+                                        >
+                                            Detail
+                                        </a>
+
+                                        <input
+                                            type="hidden"
+                                            name=''
+                                            class="qty"
+                                            value='1'
+                                        >
+
+                                        <button
+                                            class="btn btn-sm btn-dark addToCart"
+                                            data-id="{{$item->id}}"
+                                            data-name="{{$item->name}}"
+                                            data-price="{{$item->price}}"
+                                            data-discount="{{$item->discount}}"
+                                            data-image="{{$item->image}}"
+                                        >
+                                            Add to Cart
+                                        </button>
+
                                     </div>
 
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     @endforeach
+
                 </div>
+
                 {{$items->links()}}
+
             </div>
         </section>
+
+
+        <!-- Shop Logo CSS -->
+        <style>
+
+            .shop-logo {
+                width: 75px;
+                height: 75px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 2px solid #ffffff;
+            }
+
+            @media (max-width: 576px) {
+
+                .shop-logo {
+                    width: 60px;
+                    height: 60px;
+                }
+
+            }
+
+        </style>
+
 @endsection

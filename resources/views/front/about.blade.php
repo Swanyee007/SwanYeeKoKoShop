@@ -1,4 +1,3 @@
-
 @extends('layouts.front')
 
 @section('content')
@@ -7,13 +6,28 @@
 <section class="py-5 bg-dark text-white">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center">
-            <h1 class="display-4 fw-bolder">
-                About Black-Berry !
-            </h1>
+
+            <!-- Logo + About Title -->
+            <div class="d-flex justify-content-center align-items-center">
+
+                <!-- Black-Berry Logo -->
+                <img
+                    src="{{ asset('front-asset/images/blackberry-logo.jpeg') }}"
+                    alt="Black-Berry Logo"
+                    class="about-logo me-3"
+                >
+
+                <!-- About Title -->
+                <h1 class="display-4 fw-bolder mb-0">
+                    About Black-Berry !
+                </h1>
+
+            </div>
 
             <p class="lead fw-normal text-white-50 mb-0">
                 Your Trusted Online Shopping Partner
             </p>
+
         </div>
     </div>
 </section>
@@ -197,5 +211,28 @@
 
     </div>
 </section>
+
+
+<!-- About Logo CSS -->
+<style>
+
+    .about-logo {
+        width: 75px;
+        height: 75px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+    }
+
+    @media (max-width: 576px) {
+
+        .about-logo {
+            width: 60px;
+            height: 60px;
+        }
+
+    }
+
+</style>
 
 @endsection

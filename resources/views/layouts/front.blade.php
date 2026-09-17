@@ -14,12 +14,12 @@
     {{-- AJAX / CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Shop Homepage - Start Bootstrap Template</title>
+    <title>Black-Berry Online Shop</title>
 
     <!-- Favicon -->
     <link rel="icon"
-          type="image/x-icon"
-          href="assets/favicon.ico" />
+          type="image/jpeg"
+          href="{{ asset('front-asset/images/blackberry-logo.jpeg') }}" />
 
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
@@ -31,6 +31,48 @@
 
 
     <style>
+
+        /* =========================================================
+           STICKY FOOTER
+        ========================================================= */
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+
+        /* =========================================================
+           BRAND LOGO
+        ========================================================= */
+
+        .brand-logo {
+            height: 52px;
+            width: auto;
+            max-width: 160px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .brand-name {
+            margin-left: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #212529;
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+        }
+
 
         /* =========================================================
            FOOTER CONTACT
@@ -138,9 +180,7 @@
         ========================================================= */
 
         .shop-dropdown {
-
             min-width: 220px;
-
             padding: 8px 0;
         }
 
@@ -148,13 +188,11 @@
         /* Main Category */
 
         .main-category-item {
-
             position: relative;
         }
 
 
         .main-category-link {
-
             display: flex;
 
             align-items: center;
@@ -174,9 +212,7 @@
 
 
         .main-category-link:hover {
-
             background-color: #f8f9fa;
-
             color: #0d6efd;
         }
 
@@ -184,11 +220,8 @@
         /* Arrow */
 
         .category-arrow {
-
             font-size: 12px;
-
             margin-left: 20px;
-
             transition: transform 0.2s ease;
         }
 
@@ -208,7 +241,6 @@
         ========================================================= */
 
         .child-category-menu {
-
             display: none;
 
             position: absolute;
@@ -260,7 +292,6 @@
         /* Child Category Link */
 
         .child-category-link {
-
             display: block;
 
             padding: 8px 16px;
@@ -278,9 +309,7 @@
 
 
         .child-category-link:hover {
-
             background-color: #f8f9fa;
-
             color: #0d6efd;
         }
 
@@ -292,8 +321,17 @@
 
         @media (max-width: 991.98px) {
 
-            .shop-dropdown {
+            .brand-logo {
+                height: 45px;
+                max-width: 135px;
+            }
 
+            .brand-name {
+                margin-left: 8px;
+                font-size: 19px;
+            }
+
+            .shop-dropdown {
                 width: 100%;
 
                 min-width: 0;
@@ -307,15 +345,12 @@
 
 
             .main-category-item {
-
                 width: 100%;
             }
 
 
             .main-category-link {
-
                 width: 100%;
-
                 padding: 10px 16px;
             }
 
@@ -323,7 +358,6 @@
             /* Child Menu */
 
             .child-category-menu {
-
                 position: static;
 
                 display: none;
@@ -358,7 +392,6 @@
             /* Mobile Child Link */
 
             .child-category-link {
-
                 padding: 9px 16px 9px 35px;
 
                 border-top: 1px solid
@@ -386,27 +419,20 @@
         @media (max-width: 576px) {
 
             .footer-contact {
-
                 justify-content: center;
-
                 gap: 8px;
             }
 
 
             .contact-item {
-
                 padding: 8px 11px;
-
                 font-size: 12px;
             }
 
 
             .contact-icon {
-
                 width: 28px;
-
                 height: 28px;
-
                 font-size: 13px;
             }
 
@@ -431,10 +457,16 @@
 
             <!-- Brand -->
 
-            <a class="navbar-brand"
+            <a class="navbar-brand d-flex align-items-center"
                href="{{ route('shop') }}">
 
-                Black-Berry !
+                <img src="{{ asset('front-asset/images/blackberry-logo.jpeg') }}"
+                     alt="Black-Berry Logo"
+                     class="brand-logo">
+
+                <span class="brand-name">
+                    Black-Berry !
+                </span>
 
             </a>
 
@@ -562,9 +594,7 @@
 
 
                                         <span>
-
                                             {{ $mainCategory->name }}
-
                                         </span>
 
 
@@ -825,7 +855,11 @@
          PAGE CONTENT
     ========================================================= -->
 
-    @yield('content')
+    <main class="flex-grow-1">
+
+        @yield('content')
+
+    </main>
 
 
 
@@ -833,58 +867,58 @@
          FOOTER
     ========================================================= -->
 
-    <footer class="py-5 bg-dark">
+    <footer class="py-5 bg-dark mt-auto">
 
 
-        <div class="col-lg-4 col-md-6 mb-4 mb-md-0 text-end">
+        <div class="container">
+
+            <div class="row align-items-center">
 
 
-            <h5 class="text-uppercase mb-4">
+                <!-- Footer Contact -->
 
-                Contact Us
-
-            </h5>
+                <div class="col-12 text-end">
 
 
+                    <div class="footer-contact">
 
-            <div class="footer-contact">
 
+                        <!-- Email -->
 
-                <!-- Email -->
+                        <a href="mailto:blackberryonlineshop@gmail.com"
+                           class="contact-item">
 
-                <a href="mailto:blackberryonlineshop@gmail.com"
-                   class="contact-item">
+                            <i class="bi bi-envelope-fill contact-icon"></i>
 
-                    <i class="bi bi-envelope-fill contact-icon"></i>
+                            <span>
+                                blackberryonlineshop@gmail.com
+                            </span>
 
-                    <span>
-
-                        blackberryonlineshop@gmail.com
-
-                    </span>
-
-                </a>
+                        </a>
 
 
 
-                <!-- Phone -->
+                        <!-- Phone -->
 
-                <a href="tel:09531110158"
-                   class="contact-item">
+                        <a href="tel:09531110158"
+                           class="contact-item">
 
-                    <i class="bi bi-telephone-fill contact-icon"></i>
+                            <i class="bi bi-telephone-fill contact-icon"></i>
 
-                    <span>
+                            <span>
+                                09531110158
+                            </span>
 
-                        09531110158
+                        </a>
 
-                    </span>
 
-                </a>
+                    </div>
+
+
+                </div>
 
 
             </div>
-
 
         </div>
 
@@ -919,6 +953,7 @@
 
     <script src="{{ asset('front-asset/js/scripts.js') }}">
     </script>
+
 
 
     <!-- =========================================================
@@ -988,7 +1023,6 @@
                                 */
 
                                 if (window.innerWidth >= 992) {
-
                                     return;
                                 }
 
@@ -1052,12 +1086,6 @@
                 Close mobile child menus when Shop dropdown closes
                 ================================================
                 */
-
-                const shopDropdown =
-                    document.querySelector(
-                        '.shop-dropdown'
-                    );
-
 
                 const shopButton =
                     document.querySelector(
@@ -1123,4 +1151,3 @@
 </body>
 
 </html>
-```
