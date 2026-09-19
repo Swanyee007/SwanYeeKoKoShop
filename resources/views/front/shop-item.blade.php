@@ -1,4 +1,3 @@
-
 @extends('layouts.front')
 
 @section('content')
@@ -50,33 +49,72 @@
 
         <div class="row gx-5 align-items-start">
 
+
             <!-- ================================================= -->
-            <!-- Product Image -->
+            <!-- Product Photo Album -->
             <!-- ================================================= -->
 
             <div class="col-md-6 mb-5 mb-md-0">
 
-                <div class="product-image-wrapper">
+                <div class="product-gallery">
 
-                    @if($item->image)
 
-                        <img
-                            id="productMainImage"
-                            class="product-main-image"
-                            src="{{ asset($item->image) }}"
-                            alt="{{ $item->name }}"
-                        >
+                    <!-- ========================================= -->
+                    <!-- Main Image -->
+                    <!-- ========================================= -->
 
-                    @else
+                    <div class="product-image-wrapper">
 
-                        <div
-                            id="productImagePlaceholder"
-                            class="product-image-placeholder"
-                        >
-                            No Image
-                        </div>
+                        @if($item->image)
 
-                    @endif
+                            <img
+                                id="productMainImage"
+                                class="product-main-image"
+                                src="{{ asset($item->image) }}"
+                                alt="{{ $item->name }}"
+                            >
+
+                        @else
+
+                            <div
+                                id="productImagePlaceholder"
+                                class="product-image-placeholder"
+                            >
+                                No Image
+                            </div>
+
+                        @endif
+
+                    </div>
+
+
+                    <!-- ========================================= -->
+                    <!-- Photo Album Thumbnails -->
+                    <!-- ========================================= -->
+
+                    <div
+                        id="productGalleryThumbnails"
+                        class="product-gallery-thumbnails"
+                    >
+
+                        @if($item->image)
+
+                            <button
+                                type="button"
+                                class="gallery-thumbnail active"
+                                data-gallery-image="{{ asset($item->image) }}"
+                            >
+
+                                <img
+                                    src="{{ asset($item->image) }}"
+                                    alt="{{ $item->name }}"
+                                >
+
+                            </button>
+
+                        @endif
+
+                    </div>
 
                 </div>
 
@@ -89,7 +127,11 @@
 
             <div class="col-md-6">
 
+
+                <!-- ============================================= -->
                 <!-- Code -->
+                <!-- ============================================= -->
+
                 <div class="small mb-2 text-muted">
 
                     Code No:
@@ -101,15 +143,18 @@
                 </div>
 
 
+                <!-- ============================================= -->
                 <!-- Product Name -->
+                <!-- ============================================= -->
+
                 <h1 class="display-5 fw-bolder mb-3">
                     {{ $item->name }}
                 </h1>
 
 
-                <!-- ================================================= -->
+                <!-- ============================================= -->
                 <!-- Main Price -->
-                <!-- ================================================= -->
+                <!-- ============================================= -->
 
                 <div
                     id="productPrice"
@@ -144,9 +189,9 @@
                 </div>
 
 
-                <!-- ================================================= -->
+                <!-- ============================================= -->
                 <!-- Description -->
-                <!-- ================================================= -->
+                <!-- ============================================= -->
 
                 <p class="lead mb-4">
                     {{ $item->description }}
@@ -178,6 +223,33 @@
 
                                     @foreach($option->values as $valueIndex => $value)
 
+                                        @php
+
+                                            /*
+                                            |--------------------------------------------------------------------------
+                                            | Find first variant image for this option value
+                                            |--------------------------------------------------------------------------
+                                            */
+
+                                            $optionValueVariant =
+                                                $item->variants
+                                                    ->first(function ($variant) use ($value) {
+
+                                                        return $variant->optionValues
+                                                            ->contains('id', $value->id)
+                                                            &&
+                                                            !empty($variant->image);
+
+                                                    });
+
+                                            $optionButtonImage =
+                                                $optionValueVariant
+                                                    ? $optionValueVariant->image
+                                                    : $item->image;
+
+                                        @endphp
+
+
                                         <button
                                             type="button"
                                             class="btn btn-outline-dark option-btn"
@@ -186,9 +258,28 @@
                                             data-value-id="{{ $value->id }}"
                                             data-value-index="{{ $valueIndex }}"
                                             data-value="{{ $value->value }}"
+                                            data-option-name="{{ $option->name }}"
+                                            data-option-image="{{ $optionButtonImage ? asset($optionButtonImage) : '' }}"
                                         >
 
-                                            {{ $value->value }}
+                                            @if($optionButtonImage)
+
+                                                <span class="option-btn-image-wrapper">
+
+                                                    <img
+                                                        src="{{ asset($optionButtonImage) }}"
+                                                        alt="{{ $value->value }}"
+                                                        class="option-btn-image"
+                                                    >
+
+                                                </span>
+
+                                            @endif
+
+
+                                            <span class="option-btn-text">
+                                                {{ $value->value }}
+                                            </span>
 
                                         </button>
 
@@ -243,6 +334,7 @@
                     <div class="row g-3">
 
                         <!-- SKU -->
+
                         <div class="col-12">
 
                             <div class="variant-info-item">
@@ -261,6 +353,7 @@
 
 
                         <!-- Stock -->
+
                         <div class="col-md-6">
 
                             <div class="variant-info-item">
@@ -279,6 +372,7 @@
 
 
                         <!-- Price -->
+
                         <div class="col-md-6">
 
                             <div class="variant-info-item">
@@ -432,6 +526,7 @@
 
                     <div class="card h-100">
 
+
                         <!-- Product Image -->
 
                         @if($relatedItem->image)
@@ -569,9 +664,10 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+
     /*
     |--------------------------------------------------------------------------
-    | Product Variants From Controller
+    | Product Variants
     |--------------------------------------------------------------------------
     */
 
@@ -580,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Product Options Count
+    | Product Option Count
     |--------------------------------------------------------------------------
     */
 
@@ -653,6 +749,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainImage =
         document.getElementById('productMainImage');
 
+    const imagePlaceholder =
+        document.getElementById('productImagePlaceholder');
+
+    const galleryThumbnails =
+        document.getElementById('productGalleryThumbnails');
+
     const quantityInput =
         document.getElementById('inputQuantity');
 
@@ -665,13 +767,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Number Formatter
+    | Base Asset URL
+    |--------------------------------------------------------------------------
+    */
+
+    const assetBase =
+        "{{ asset('') }}";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Format Price
     |--------------------------------------------------------------------------
     */
 
     function formatPrice(price)
     {
+
         return Number(price).toLocaleString('en-US');
+
     }
 
 
@@ -683,31 +797,327 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function calculateDiscount(price, discount)
     {
+
         return price - (
             price * (discount / 100)
         );
+
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Restore Original Product Image
+    | Get Image URL
+    |--------------------------------------------------------------------------
+    */
+
+    function getImageUrl(image)
+    {
+
+        if (!image) {
+            return '';
+        }
+
+
+        if (
+            image.startsWith('http://') ||
+            image.startsWith('https://') ||
+            image.startsWith('/')
+        ) {
+
+            return image;
+
+        }
+
+
+        return assetBase + image;
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get Variant Image
+    |--------------------------------------------------------------------------
+    */
+
+    function getVariantImage(variant)
+    {
+
+        if (!variant) {
+            return '';
+        }
+
+
+        return getImageUrl(
+            variant.image
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Add Image To Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    function addGalleryImage(
+        image,
+        altText = ''
+    )
+    {
+
+        if (!image) {
+            return;
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Prevent Duplicate Images
+        |--------------------------------------------------------------------------
+        */
+
+        const existing =
+            galleryThumbnails.querySelector(
+                `[data-gallery-image="${CSS.escape(image)}"]`
+            );
+
+
+        if (existing) {
+            return;
+        }
+
+
+        const button =
+            document.createElement('button');
+
+
+        button.type =
+            'button';
+
+
+        button.className =
+            'gallery-thumbnail';
+
+
+        button.dataset.galleryImage =
+            image;
+
+
+        const img =
+            document.createElement('img');
+
+
+        img.src =
+            image;
+
+
+        img.alt =
+            altText;
+
+
+        button.appendChild(img);
+
+
+        galleryThumbnails.appendChild(
+            button
+        );
+
+
+        button.addEventListener(
+            'click',
+            function () {
+
+                setMainGalleryImage(
+                    image
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Set Main Gallery Image
+    |--------------------------------------------------------------------------
+    */
+
+    function setMainGalleryImage(image)
+    {
+
+        if (!image) {
+            return;
+        }
+
+
+        if (mainImage) {
+
+            mainImage.src =
+                image;
+
+            mainImage.style.display =
+                'block';
+
+        }
+
+
+        if (imagePlaceholder) {
+
+            imagePlaceholder.style.display =
+                'none';
+
+        }
+
+
+        galleryThumbnails
+            .querySelectorAll(
+                '.gallery-thumbnail'
+            )
+            .forEach(function (thumbnail) {
+
+                thumbnail.classList.toggle(
+                    'active',
+                    thumbnail.dataset.galleryImage === image
+                );
+
+            });
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Clear Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    function clearGallery()
+    {
+
+        if (!galleryThumbnails) {
+            return;
+        }
+
+
+        galleryThumbnails.innerHTML = '';
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Build Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    function buildGallery(
+        variants = []
+    )
+    {
+
+        if (!galleryThumbnails) {
+            return;
+        }
+
+
+        clearGallery();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Main Item Image
+        |--------------------------------------------------------------------------
+        */
+
+        const originalImage =
+            getImageUrl(
+                originalItem.image
+            );
+
+
+        if (originalImage) {
+
+            addGalleryImage(
+                originalImage,
+                originalItem.name
+            );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Variant Images
+        |--------------------------------------------------------------------------
+        */
+
+        variants.forEach(function (variant) {
+
+            const image =
+                getVariantImage(
+                    variant
+                );
+
+
+            if (image) {
+
+                addGalleryImage(
+                    image,
+                    originalItem.name
+                );
+
+            }
+
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Select First Image
+        |--------------------------------------------------------------------------
+        */
+
+        const firstThumbnail =
+            galleryThumbnails.querySelector(
+                '.gallery-thumbnail'
+            );
+
+
+        if (firstThumbnail) {
+
+            setMainGalleryImage(
+                firstThumbnail.dataset.galleryImage
+            );
+
+        }
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Restore Original Image
     |--------------------------------------------------------------------------
     */
 
     function restoreOriginalImage()
     {
 
-        if (!mainImage) {
-            return;
-        }
+        const image =
+            getImageUrl(
+                originalItem.image
+            );
 
 
-        if (originalItem.image) {
+        if (image) {
 
-            mainImage.src =
-                "{{ asset('') }}" +
-                originalItem.image;
+            setMainGalleryImage(
+                image
+            );
 
         }
 
@@ -716,7 +1126,100 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Check Whether All Options Selected
+    | Find Variants Related To Selected Options
+    |--------------------------------------------------------------------------
+    */
+
+    function getMatchingGalleryVariants()
+    {
+
+        const selectedValueIds =
+            Object.values(
+                selectedOptions
+            ).map(function (option) {
+
+                return Number(
+                    option.valueId
+                );
+
+            });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | No Selection
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            selectedValueIds.length === 0
+        ) {
+
+            return productVariants;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return Variants Containing All Selected Values
+        |--------------------------------------------------------------------------
+        */
+
+        return productVariants.filter(
+            function (variant) {
+
+                const variantValueIds =
+                    variant.option_values.map(
+                        function (optionValue) {
+
+                            return Number(
+                                optionValue.id
+                            );
+
+                        }
+                    );
+
+
+                return selectedValueIds.every(
+                    function (valueId) {
+
+                        return variantValueIds.includes(
+                            valueId
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    function updateGallery()
+    {
+
+        const matchingVariants =
+            getMatchingGalleryVariants();
+
+
+        buildGallery(
+            matchingVariants
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Check All Options Selected
     |--------------------------------------------------------------------------
     */
 
@@ -731,11 +1234,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         const selectedCount =
-            Object.keys(selectedOptions).length;
+            Object.keys(
+                selectedOptions
+            ).length;
 
 
         return (
-            productOptionCount === selectedCount
+            productOptionCount ===
+            selectedCount
         );
 
     }
@@ -743,7 +1249,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Update Selected Option Display
+    | Update Selected Options
     |--------------------------------------------------------------------------
     */
 
@@ -756,7 +1262,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         const selectedKeys =
-            Object.keys(selectedOptions);
+            Object.keys(
+                selectedOptions
+            );
 
 
         if (selectedKeys.length === 0) {
@@ -777,32 +1285,37 @@ document.addEventListener('DOMContentLoaded', function () {
         let html = '';
 
 
-        selectedKeys.forEach(function (optionId) {
+        selectedKeys.forEach(
+            function (optionId) {
 
-            const data =
-                selectedOptions[optionId];
-
-
-            html += `
-
-                <div class="selected-option-row">
-
-                    <span class="selected-option-name">
-                        ${data.optionName}:
-                    </span>
-
-                    <strong>
-                        ${data.value}
-                    </strong>
-
-                </div>
-
-            `;
-
-        });
+                const data =
+                    selectedOptions[
+                        optionId
+                    ];
 
 
-        selectedOptionsContainer.innerHTML = html;
+                html += `
+
+                    <div class="selected-option-row">
+
+                        <span class="selected-option-name">
+                            ${data.optionName}:
+                        </span>
+
+                        <strong>
+                            ${data.value}
+                        </strong>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        selectedOptionsContainer.innerHTML =
+            html;
 
     }
 
@@ -824,7 +1337,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (productOptionCount === 0) {
 
-            selectedVariant = null;
+            selectedVariant =
+                null;
 
             showOriginalProduct();
 
@@ -841,7 +1355,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!allOptionsSelected()) {
 
-            selectedVariant = null;
+            selectedVariant =
+                null;
 
             showWaitingState();
 
@@ -851,13 +1366,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         const selectedValueIds =
-            Object.values(selectedOptions).map(
-                function (option) {
+            Object.values(
+                selectedOptions
+            ).map(function (option) {
 
-                    return Number(option.valueId);
+                return Number(
+                    option.valueId
+                );
 
-                }
-            );
+            });
 
 
         /*
@@ -908,7 +1425,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (selectedVariant) {
 
-            showVariant(selectedVariant);
+            showVariant(
+                selectedVariant
+            );
 
         } else {
 
@@ -928,7 +1447,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function showOriginalProduct()
     {
 
-        selectedVariant = null;
+        selectedVariant =
+            null;
 
 
         if (variantInformation) {
@@ -949,7 +1469,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (productPrice) {
 
-            if (originalItem.discount > 0) {
+            if (
+                originalItem.discount > 0
+            ) {
 
                 const discountedPrice =
                     calculateDiscount(
@@ -998,29 +1520,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         if (variantSku) {
-            variantSku.innerText = '-';
+
+            variantSku.innerText =
+                '-';
+
         }
 
 
         if (variantStock) {
-            variantStock.innerText = '-';
+
+            variantStock.innerText =
+                '-';
+
         }
 
 
         if (variantPrice) {
-            variantPrice.innerText = '-';
+
+            variantPrice.innerText =
+                '-';
+
         }
 
 
         restoreOriginalImage();
 
 
-        quantityInput.max = 999999;
+        updateGallery();
+
+
+        quantityInput.max =
+            999999;
 
 
         if (addToCartButton) {
 
-            addToCartButton.disabled = false;
+            addToCartButton.disabled =
+                false;
 
         }
 
@@ -1060,12 +1596,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
+        updateGallery();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Restore Original Main Image
+        |--------------------------------------------------------------------------
+        */
+
         restoreOriginalImage();
 
 
         if (addToCartButton) {
 
-            addToCartButton.disabled = true;
+            addToCartButton.disabled =
+                true;
 
         }
 
@@ -1078,9 +1624,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        quantityInput.max = 1;
+        quantityInput.max =
+            1;
 
-        quantityInput.value = 1;
+
+        quantityInput.value =
+            1;
 
     }
 
@@ -1131,12 +1680,15 @@ document.addEventListener('DOMContentLoaded', function () {
         */
 
         const stock =
-            Number(variant.stock || 0);
+            Number(
+                variant.stock || 0
+            );
 
 
         if (variantStock) {
 
-            variantStock.innerText = stock;
+            variantStock.innerText =
+                stock;
 
         }
 
@@ -1148,12 +1700,15 @@ document.addEventListener('DOMContentLoaded', function () {
         */
 
         let price =
-            Number(variant.price || 0);
+            Number(
+                variant.price || 0
+            );
 
 
         if (price <= 0) {
 
-            price = originalItem.price;
+            price =
+                originalItem.price;
 
         }
 
@@ -1161,7 +1716,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (variantPrice) {
 
             variantPrice.innerText =
-                formatPrice(price) + ' MMK';
+                formatPrice(price) +
+                ' MMK';
 
         }
 
@@ -1174,7 +1730,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (productPrice) {
 
-            if (originalItem.discount > 0) {
+            if (
+                originalItem.discount > 0
+            ) {
 
                 const discountedPrice =
                     calculateDiscount(
@@ -1220,23 +1778,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
         /*
         |--------------------------------------------------------------------------
-        | Variant Image
+        | Variant Gallery
         |--------------------------------------------------------------------------
         */
 
-        if (mainImage) {
+        const matchingVariants =
+            getMatchingGalleryVariants();
 
-            if (variant.image) {
 
-                mainImage.src =
-                    "{{ asset('') }}" +
-                    variant.image;
+        buildGallery(
+            matchingVariants
+        );
 
-            } else {
 
-                restoreOriginalImage();
+        /*
+        |--------------------------------------------------------------------------
+        | Make Variant Image Main
+        |--------------------------------------------------------------------------
+        */
 
-            }
+        const variantImage =
+            getVariantImage(
+                variant
+            );
+
+
+        if (variantImage) {
+
+            setMainGalleryImage(
+                variantImage
+            );
 
         }
 
@@ -1248,43 +1819,72 @@ document.addEventListener('DOMContentLoaded', function () {
         */
 
         quantityInput.max =
-            stock > 0 ? stock : 1;
+            stock > 0
+                ? stock
+                : 1;
 
 
         if (stock <= 0) {
 
-            quantityInput.value = 1;
+            quantityInput.value =
+                1;
 
-            addToCartButton.disabled = true;
 
-            selectionMessage.innerText =
-                'This variant is out of stock.';
+            if (addToCartButton) {
+
+                addToCartButton.disabled =
+                    true;
+
+            }
+
+
+            if (selectionMessage) {
+
+                selectionMessage.innerText =
+                    'This variant is out of stock.';
+
+            }
 
         } else {
 
             if (
-                Number(quantityInput.value) >
-                stock
+                Number(
+                    quantityInput.value
+                ) > stock
             ) {
 
-                quantityInput.value = stock;
+                quantityInput.value =
+                    stock;
 
             }
 
 
             if (
-                Number(quantityInput.value) < 1
+                Number(
+                    quantityInput.value
+                ) < 1
             ) {
 
-                quantityInput.value = 1;
+                quantityInput.value =
+                    1;
 
             }
 
 
-            addToCartButton.disabled = false;
+            if (addToCartButton) {
 
-            selectionMessage.innerText =
-                'Variant selected.';
+                addToCartButton.disabled =
+                    false;
+
+            }
+
+
+            if (selectionMessage) {
+
+                selectionMessage.innerText =
+                    'Variant selected.';
+
+            }
 
         }
 
@@ -1300,7 +1900,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function showVariantNotFound()
     {
 
-        selectedVariant = null;
+        selectedVariant =
+            null;
 
 
         if (variantInformation) {
@@ -1319,12 +1920,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
+        updateGallery();
+
+
         restoreOriginalImage();
 
 
         if (addToCartButton) {
 
-            addToCartButton.disabled = true;
+            addToCartButton.disabled =
+                true;
 
         }
 
@@ -1337,9 +1942,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        quantityInput.max = 1;
+        quantityInput.max =
+            1;
 
-        quantityInput.value = 1;
+
+        quantityInput.value =
+            1;
 
     }
 
@@ -1350,102 +1958,158 @@ document.addEventListener('DOMContentLoaded', function () {
     |--------------------------------------------------------------------------
     */
 
-    optionButtons.forEach(function (button) {
+    optionButtons.forEach(
+        function (button) {
 
-        button.addEventListener(
-            'click',
-            function () {
+            button.addEventListener(
+                'click',
+                function () {
 
-                const optionId =
-                    this.dataset.optionId;
-
-                const valueId =
-                    this.dataset.valueId;
-
-                const value =
-                    this.dataset.value;
+                    const optionId =
+                        this.dataset.optionId;
 
 
-                const option =
-                    this.closest('.product-option');
+                    const valueId =
+                        this.dataset.valueId;
 
 
-                const optionName =
-                    option.querySelector('h6')
-                        .innerText
-                        .trim();
+                    const value =
+                        this.dataset.value;
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | Remove Active From Same Option
-                |--------------------------------------------------------------------------
-                */
-
-                option
-                    .querySelectorAll('.option-btn')
-                    .forEach(function (btn) {
-
-                        btn.classList.remove(
-                            'active'
+                    const option =
+                        this.closest(
+                            '.product-option'
                         );
 
-                    });
+
+                    const optionName =
+                        this.dataset.optionName ||
+                        option.querySelector('h6')
+                            .innerText
+                            .trim();
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | Activate Current Button
-                |--------------------------------------------------------------------------
-                */
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Remove Active From Same Option
+                    |--------------------------------------------------------------------------
+                    */
 
-                this.classList.add('active');
+                    option
+                        .querySelectorAll(
+                            '.option-btn'
+                        )
+                        .forEach(
+                            function (btn) {
 
+                                btn.classList.remove(
+                                    'active'
+                                );
 
-                /*
-                |--------------------------------------------------------------------------
-                | Save Selection
-                |--------------------------------------------------------------------------
-                */
-
-                selectedOptions[optionId] = {
-
-                    optionId:
-                        optionId,
-
-                    optionName:
-                        optionName,
-
-                    valueId:
-                        valueId,
-
-                    value:
-                        value
-
-                };
+                            }
+                        );
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | Update UI
-                |--------------------------------------------------------------------------
-                */
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Activate Current Button
+                    |--------------------------------------------------------------------------
+                    */
 
-                updateSelectedOptions();
+                    this.classList.add(
+                        'active'
+                    );
 
 
-                /*
-                |--------------------------------------------------------------------------
-                | Find Variant
-                |--------------------------------------------------------------------------
-                */
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Save Selection
+                    |--------------------------------------------------------------------------
+                    */
 
-                findVariant();
+                    selectedOptions[
+                        optionId
+                    ] = {
 
-            }
-        );
+                        optionId:
+                            optionId,
 
-    });
+                        optionName:
+                            optionName,
+
+                        valueId:
+                            valueId,
+
+                        value:
+                            value
+
+                    };
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Update Selected Options
+                    |--------------------------------------------------------------------------
+                    */
+
+                    updateSelectedOptions();
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Update Photo Album
+                    |--------------------------------------------------------------------------
+                    */
+
+                    updateGallery();
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Find Variant
+                    |--------------------------------------------------------------------------
+                    */
+
+                    findVariant();
+
+                }
+            );
+
+        }
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Existing Gallery Thumbnail Click
+    |--------------------------------------------------------------------------
+    */
+
+    if (galleryThumbnails) {
+
+        galleryThumbnails
+            .querySelectorAll(
+                '.gallery-thumbnail'
+            )
+            .forEach(
+                function (thumbnail) {
+
+                    thumbnail.addEventListener(
+                        'click',
+                        function () {
+
+                            setMainGalleryImage(
+                                this.dataset.galleryImage
+                            );
+
+                        }
+                    );
+
+                }
+            );
+
+    }
 
 
     /*
@@ -1455,7 +2119,9 @@ document.addEventListener('DOMContentLoaded', function () {
     */
 
     const decreaseQty =
-        document.getElementById('decreaseQty');
+        document.getElementById(
+            'decreaseQty'
+        );
 
 
     if (decreaseQty) {
@@ -1465,7 +2131,9 @@ document.addEventListener('DOMContentLoaded', function () {
             function () {
 
                 let quantity =
-                    Number(quantityInput.value);
+                    Number(
+                        quantityInput.value
+                    );
 
 
                 if (
@@ -1473,7 +2141,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     quantity < 1
                 ) {
 
-                    quantity = 1;
+                    quantity =
+                        1;
 
                 }
 
@@ -1501,7 +2170,9 @@ document.addEventListener('DOMContentLoaded', function () {
     */
 
     const increaseQty =
-        document.getElementById('increaseQty');
+        document.getElementById(
+            'increaseQty'
+        );
 
 
     if (increaseQty) {
@@ -1511,7 +2182,9 @@ document.addEventListener('DOMContentLoaded', function () {
             function () {
 
                 let quantity =
-                    Number(quantityInput.value);
+                    Number(
+                        quantityInput.value
+                    );
 
 
                 if (
@@ -1519,13 +2192,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     quantity < 1
                 ) {
 
-                    quantity = 1;
+                    quantity =
+                        1;
 
                 }
 
 
                 const max =
-                    Number(quantityInput.max);
+                    Number(
+                        quantityInput.max
+                    );
 
 
                 /*
@@ -1549,6 +2225,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                 }
+
 
                 /*
                 |--------------------------------------------------------------------------
@@ -1585,7 +2262,9 @@ document.addEventListener('DOMContentLoaded', function () {
         function () {
 
             let quantity =
-                Number(this.value);
+                Number(
+                    this.value
+                );
 
 
             if (
@@ -1593,7 +2272,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 quantity < 1
             ) {
 
-                quantity = 1;
+                quantity =
+                    1;
 
             }
 
@@ -1610,7 +2290,9 @@ document.addEventListener('DOMContentLoaded', function () {
             ) {
 
                 const max =
-                    Number(this.max);
+                    Number(
+                        this.max
+                    );
 
 
                 if (
@@ -1618,14 +2300,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     quantity > max
                 ) {
 
-                    quantity = max;
+                    quantity =
+                        max;
 
                 }
 
             }
 
 
-            this.value = quantity;
+            this.value =
+                quantity;
 
         }
     );
@@ -1642,6 +2326,7 @@ document.addEventListener('DOMContentLoaded', function () {
         addToCartButton.addEventListener(
             'click',
             function () {
+
 
                 /*
                 |--------------------------------------------------------------------------
@@ -1673,7 +2358,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 */
 
                 const quantity =
-                    Number(quantityInput.value);
+                    Number(
+                        quantityInput.value
+                    );
 
 
                 if (quantity < 1) {
@@ -1699,7 +2386,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const stock =
                         Number(
-                            selectedVariant.stock || 0
+                            selectedVariant.stock ||
+                            0
                         );
 
 
@@ -1722,7 +2410,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     let price =
                         Number(
-                            selectedVariant.price || 0
+                            selectedVariant.price ||
+                            0
                         );
 
 
@@ -1833,7 +2522,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         let cart =
                             JSON.parse(
-                                localStorage.getItem('shops')
+                                localStorage.getItem(
+                                    'shops'
+                                )
                             ) || [];
 
 
@@ -1842,8 +2533,15 @@ document.addEventListener('DOMContentLoaded', function () {
                                 function (cartItem) {
 
                                     return (
-                                        Number(cartItem.id) ===
-                                        Number(cartData.id) &&
+
+                                        Number(
+                                            cartItem.id
+                                        ) ===
+                                        Number(
+                                            cartData.id
+                                        )
+
+                                        &&
 
                                         Number(
                                             cartItem.variant_id
@@ -1851,27 +2549,36 @@ document.addEventListener('DOMContentLoaded', function () {
                                         Number(
                                             cartData.variant_id
                                         )
+
                                     );
 
                                 }
                             );
 
 
-                        if (existingIndex !== -1) {
+                        if (
+                            existingIndex !== -1
+                        ) {
 
                             cart[
                                 existingIndex
                             ].qty =
+
                                 Number(
                                     cart[
                                         existingIndex
                                     ].qty || 0
-                                ) +
+                                )
+
+                                +
+
                                 quantity;
 
                         } else {
 
-                            cart.push(cartData);
+                            cart.push(
+                                cartData
+                            );
 
                         }
 
@@ -1883,11 +2590,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                         if (
-                            typeof window.count ===
+                            typeof window.updateCartCount ===
                             'function'
                         ) {
 
-                            window.count();
+                            window.updateCartCount();
 
                         }
 
@@ -1970,7 +2677,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     let cart =
                         JSON.parse(
-                            localStorage.getItem('shops')
+                            localStorage.getItem(
+                                'shops'
+                            )
                         ) || [];
 
 
@@ -1979,31 +2688,47 @@ document.addEventListener('DOMContentLoaded', function () {
                             function (cartItem) {
 
                                 return (
-                                    Number(cartItem.id) ===
-                                    Number(cartData.id) &&
+
+                                    Number(
+                                        cartItem.id
+                                    ) ===
+                                    Number(
+                                        cartData.id
+                                    )
+
+                                    &&
 
                                     !cartItem.variant_id
+
                                 );
 
                             }
                         );
 
 
-                    if (existingIndex !== -1) {
+                    if (
+                        existingIndex !== -1
+                    ) {
 
                         cart[
                             existingIndex
                         ].qty =
+
                             Number(
                                 cart[
                                     existingIndex
                                 ].qty || 0
-                            ) +
+                            )
+
+                            +
+
                             quantity;
 
                     } else {
 
-                        cart.push(cartData);
+                        cart.push(
+                            cartData
+                        );
 
                     }
 
@@ -2015,11 +2740,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                     if (
-                        typeof window.count ===
+                        typeof window.updateCartCount ===
                         'function'
                     ) {
 
-                        window.count();
+                        window.updateCartCount();
 
                     }
 
@@ -2034,6 +2759,17 @@ document.addEventListener('DOMContentLoaded', function () {
         );
 
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Initial Gallery
+    |--------------------------------------------------------------------------
+    */
+
+    buildGallery(
+        productVariants
+    );
 
 
     /*
@@ -2065,6 +2801,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <style>
 
+
     /* ========================================================= */
     /* Shop Item Logo */
     /* ========================================================= */
@@ -2085,7 +2822,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ========================================================= */
-    /* Product Image */
+    /* Product Gallery */
+    /* ========================================================= */
+
+    .product-gallery {
+
+        width: 100%;
+
+    }
+
+
+    /* ========================================================= */
+    /* Product Main Image Wrapper */
     /* ========================================================= */
 
     .product-image-wrapper {
@@ -2106,8 +2854,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         overflow: hidden;
 
+        border: 1px solid #eeeeee;
+
     }
 
+
+    /* ========================================================= */
+    /* Product Main Image */
+    /* ========================================================= */
 
     .product-main-image {
 
@@ -2119,8 +2873,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         display: block;
 
+        cursor: zoom-in;
+
+        transition: transform .25s ease;
+
     }
 
+
+    .product-main-image:hover {
+
+        transform: scale(1.02);
+
+    }
+
+
+    /* ========================================================= */
+    /* Product Image Placeholder */
+    /* ========================================================= */
 
     .product-image-placeholder {
 
@@ -2142,6 +2911,87 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* ========================================================= */
+    /* Photo Album Thumbnails */
+    /* ========================================================= */
+
+    .product-gallery-thumbnails {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+
+        margin-top: 15px;
+
+        padding: 2px;
+
+    }
+
+
+    .gallery-thumbnail {
+
+        width: 78px;
+
+        height: 78px;
+
+        padding: 3px;
+
+        border: 2px solid #dee2e6;
+
+        border-radius: 8px;
+
+        background: #ffffff;
+
+        overflow: hidden;
+
+        cursor: pointer;
+
+        transition: all .2s ease;
+
+    }
+
+
+    .gallery-thumbnail:hover {
+
+        border-color: #212529;
+
+        transform: translateY(-2px);
+
+    }
+
+
+    .gallery-thumbnail.active {
+
+        border-color: #212529;
+
+        box-shadow:
+            0 0 0 2px rgba(
+                33,
+                37,
+                41,
+                .12
+            );
+
+    }
+
+
+    .gallery-thumbnail img {
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        display: block;
+
+        border-radius: 5px;
+
+    }
+
+
+    /* ========================================================= */
     /* Product Price */
     /* ========================================================= */
 
@@ -2158,18 +3008,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
     .option-btn {
 
-        min-width: 65px;
+        min-width: 95px;
 
-        border-radius: 6px;
+        min-height: 78px;
+
+        padding: 5px 8px;
+
+        border-radius: 8px;
+
+        display: inline-flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 4px;
 
         transition: all .2s ease;
+
+        overflow: hidden;
 
     }
 
 
     .option-btn:hover {
 
-        transform: translateY(-1px);
+        transform: translateY(-2px);
 
     }
 
@@ -2181,6 +3047,57 @@ document.addEventListener('DOMContentLoaded', function () {
         color: #ffffff;
 
         border-color: #212529;
+
+    }
+
+
+    /* ========================================================= */
+    /* Option Button Image */
+    /* ========================================================= */
+
+    .option-btn-image-wrapper {
+
+        width: 42px;
+
+        height: 42px;
+
+        display: block;
+
+        overflow: hidden;
+
+        border-radius: 6px;
+
+        background: #f8f9fa;
+
+        border: 1px solid #dee2e6;
+
+    }
+
+
+    .option-btn-image {
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        display: block;
+
+    }
+
+
+    /* ========================================================= */
+    /* Option Button Text */
+    /* ========================================================= */
+
+    .option-btn-text {
+
+        font-size: 13px;
+
+        line-height: 1.2;
+
+        white-space: nowrap;
 
     }
 
@@ -2371,6 +3288,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     @media (max-width: 576px) {
 
+
         .shop-item-logo {
 
             width: 60px;
@@ -2394,6 +3312,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
+        .product-gallery-thumbnails {
+
+            gap: 7px;
+
+        }
+
+
+        .gallery-thumbnail {
+
+            width: 64px;
+
+            height: 64px;
+
+        }
+
+
         .selected-option-row {
 
             flex-wrap: wrap;
@@ -2403,7 +3337,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         .option-btn {
 
-            min-width: 55px;
+            min-width: 75px;
+
+            min-height: 70px;
+
+        }
+
+
+        .option-btn-image-wrapper {
+
+            width: 36px;
+
+            height: 36px;
+
+        }
+
+
+        .option-btn-text {
+
+            font-size: 12px;
 
         }
 
@@ -2412,4 +3364,3 @@ document.addEventListener('DOMContentLoaded', function () {
 </style>
 
 @endsection
-
