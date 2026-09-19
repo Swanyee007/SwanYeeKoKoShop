@@ -23,13 +23,13 @@ class ItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "code_no"=>'required',
-            'name'=>'required',
-            'image'=> 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'price'=>'required',
-             'in_stock'=> 'required|boolean',
-            'description'=>'required',
-            'category_id'=>'required',
+            "code_no" => 'required',
+            'name' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+            'price' => 'required',
+            'in_stock' => 'required|boolean',
+            'description' => 'required',
+            'category_id' => 'required',
         ];
     }
 }

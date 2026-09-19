@@ -25,4 +25,14 @@ class Item extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function options()
+    {
+        return $this->hasMany(ItemOption::class);
+    }
+
+    public function variants()
+    {
+        return $this->hasMany(ItemVariant::class);
+    }
 }
